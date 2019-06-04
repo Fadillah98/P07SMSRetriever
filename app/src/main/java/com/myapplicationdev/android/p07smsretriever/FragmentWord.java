@@ -45,15 +45,6 @@ public class FragmentWord extends Fragment {
                 String searchWord = etWord.getText().toString();
                 String[] splitStr = searchWord.trim().split("\\s+");
 
-                int permissionCheck = PermissionChecker.checkSelfPermission
-                        (getActivity(), Manifest.permission.READ_SMS);
-
-                if (permissionCheck != PermissionChecker.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.READ_SMS}, 0);
-                    return;
-                }
-
                 Uri uri = Uri.parse("content://sms");
                 String[] reqCols = new String[]{"date", "address", "body", "type"};
 
@@ -89,17 +80,4 @@ public class FragmentWord extends Fragment {
         return view;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case 0: {
-                if (grantResults.length > 0 &&
-                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    btnRetrieveWord.performClick();
-                } else {
-                    Toast.makeText(getActivity(), "Permission not granted", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
 }

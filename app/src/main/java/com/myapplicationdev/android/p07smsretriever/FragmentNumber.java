@@ -47,15 +47,6 @@ public class FragmentNumber extends Fragment {
 
                 String searchNum = etNum.getText().toString();
 
-                int permissionCheck = PermissionChecker.checkSelfPermission
-                        (getActivity(), Manifest.permission.READ_SMS);
-
-                if (permissionCheck != PermissionChecker.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.READ_SMS}, 0);
-                    return;
-                }
-
                 Uri uri = Uri.parse("content://sms");
                 String[] reqCols = new String[]{"date", "address", "body", "type"};
 
@@ -88,16 +79,11 @@ public class FragmentNumber extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent email = new Intent(Intent.ACTION_SEND);
-                // Put essentials like email address, subject & body text
                 email.putExtra(Intent.EXTRA_EMAIL, new String[]{"17010176@myrp.edu.sg"});
                 email.putExtra(Intent.EXTRA_SUBJECT, "Email SMS Content");
                 email.putExtra(Intent.EXTRA_TEXT, smsBody);
 
-                // This MIME type indicates email
                 email.setType("message/rfc822");
-
-                // createChooser shows user a list of app that can handle
-                // this MIME type, which is, email
                 startActivity(Intent.createChooser(email, "Choose an Email client :"));
             }
         });
@@ -105,17 +91,4 @@ public class FragmentNumber extends Fragment {
         return view;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case 0: {
-                if (grantResults.length > 0 &&
-                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    btnRetrieveNum.performClick();
-                } else {
-                    Toast.makeText(getActivity(), "Permission not granted", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
 }
