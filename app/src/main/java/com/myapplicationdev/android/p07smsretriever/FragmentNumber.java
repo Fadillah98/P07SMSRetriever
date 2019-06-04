@@ -90,7 +90,16 @@ public class FragmentNumber extends Fragment {
             }
         });
 
+        if (savedInstanceState != null){
+            tvNum.setText(savedInstanceState.getString("text"));
+        }
+
         return view;
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("text", tvNum.getText().toString());
+    }
 }

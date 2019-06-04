@@ -79,7 +79,17 @@ public class FragmentWord extends Fragment {
             }
         });
 
+        if (savedInstanceState != null){
+            tvWord.setText(savedInstanceState.getString("text"));
+        }
+
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("text", tvWord.getText().toString());
     }
 
 }

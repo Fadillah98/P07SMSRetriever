@@ -13,21 +13,29 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    FragmentManager fm;
+    FragmentTransaction ft, ft2;
+    Fragment f1, f2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
+        fm = getSupportFragmentManager();
+        ft = fm.beginTransaction();
+        ft2 = fm.beginTransaction();
 
-        Fragment f1 = new FragmentNumber();
-        ft.replace(R.id.frame1, f1);
+        if(savedInstanceState == null){
+            f1 = new FragmentNumber();
+            ft.add(R.id.frame1, f1, "TAG").commit();
+            f2 = new FragmentWord();
+            ft2.add(R.id.frame2, f2, "TAG").commit();
+        }else{
+            f1 = fm.findFragmentByTag("TAG");
+            f2 = fm.findFragmentByTag("TAG");
 
-        Fragment f2 = new FragmentWord();
-        ft.replace(R.id.frame2, f2);
-
-        ft.commit();
+        }
 
         int permissionCheck = PermissionChecker.checkSelfPermission
                 (MainActivity.this, Manifest.permission.READ_SMS);
